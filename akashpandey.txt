@@ -1,0 +1,126 @@
+#include <bits/stdc++.h>
+#include<stdio.h>
+using namespace std;
+struct pairs {
+   long int first;
+   long int second;
+};
+int partition(struct pairs a[],int l,int u);
+void quick_sort(struct pairs a[],int l,int u)
+{
+    int j;
+    if(l<u)
+    {
+        j=partition(a,l,u);
+        quick_sort(a,l,j-1);
+        quick_sort(a,j+1,u);
+    }
+}
+ 
+int partition(struct pairs a[],int l,int u)
+{
+    int i,j;
+  struct pairs v,temp;
+    v=a[l];
+    i=l;
+    j=u+1;
+  if(a[i].first==v.first){
+    do
+    {
+        do
+            i++;
+            
+        while(a[i].second<v.second&&i<u);
+        
+        do
+            j--;
+        while(v.second<a[j].second);
+        
+        if(i<j)
+        {
+            temp=a[i];
+            a[i]=a[j];
+            a[j]=temp;
+        }
+    }while(i<j);
+    
+    a[l]=a[j];
+    a[j]=v;
+  }
+  else{ 
+    
+    do
+    {
+        do
+            i++;
+            
+        while(a[i].first<v.first&&i<u);
+        
+        do
+            j--;
+        while(v.first<a[j].first);
+        
+        if(i<j)
+        {
+            temp=a[i];
+            a[i]=a[j];
+            a[j]=temp;
+        }
+    }while(i<j);
+    
+    a[l]=a[j];
+    a[j]=v;}
+    
+    return(j);
+}
+
+int main(){
+    long c;
+    int n,k,f=1;
+    cin>>c>>n>>k;
+    struct pairs a[n];
+    for(int i=0;i<n;i++)
+        cin>>a[i].first>>a[i].second;
+    quick_sort(a,0,n-1);
+    if(k==1){
+        pairs max;
+        if(c-a[n-1].second>a[0].first-1){
+            max.first=a[n-1].second+1;
+            max.second=c;
+        }
+        else{
+            max.first=1;
+            max.second=a[0].first-1;
+        }
+        for(int i=0;i<n-1;i++){
+            if(a[i+1].first-a[i].second-1>max.second-max.first+1)
+            {max.first=a[i].second+1;max.second=a[i+1].first-1;
+              }
+        }
+        for(int i=0;i<n-1;i++){
+            if(a[i].second>=a[i+1].first){
+                if(a[i+1].second-a[i+1].first>max.second-max.first){
+                    if(a[i].second-a[i].first>max.second-max.first)
+                    {f=0;break;}
+                    a[i].first=max.first;
+                    a[i].second=max.second;break;}
+                else{
+                a[i+1].first=max.first;
+                a[i+1].second=max.second;break;}
+            }}//cout<<max.first<<" "<<max.second;
+        quick_sort(a,0,n-1);
+        }
+     for(int i=0;i<n-1;i++){
+         if(a[i].second>=a[i+1].first){
+             f=0;
+             break;
+         }
+     }
+     if(f)
+         cout<<"Good"<<endl;
+     else
+         cout<<"Bad"<<endl;
+ //cout<<max.first<<" "<<max.second;
+    // your code goes here
+    return 0;
+}
